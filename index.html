@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Línea de la Promesa: Adán a Jesús</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .transition-all { transition: all 0.3s ease; }
+        .rotate-180 { transform: rotate(180deg); }
+        .animate-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-900">
+
+    <div id="app" class="min-h-screen p-4 md:p-8">
+        <header class="max-w-4xl mx-auto text-center mb-8">
+            <h1 id="era-title" class="text-3xl md:text-4xl font-bold text-slate-900 mb-2 flex items-center justify-center gap-3">
+                <!-- Icono e Título dinámico -->
+            </h1>
+            <p id="era-subtitle" class="text-lg text-slate-600 italic mb-6">
+                <!-- Subtítulo dinámico -->
+            </p>
+
+            <!-- Navigation Tabs -->
+            <div id="tabs-container" class="flex flex-wrap justify-center gap-2 mb-8">
+                <!-- Pestañas generadas por JS -->
+            </div>
+        </header>
+
+        <main class="max-w-3xl mx-auto relative">
+            <div class="text-center mb-10 px-4">
+                <p id="era-description" class="text-slate-500 text-sm max-w-lg mx-auto">
+                    <!-- Descripción dinámica -->
+                </p>
+            </div>
+
+            <!-- Vertical Line -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-slate-200 z-0"></div>
+
+            <div id="list-container" class="space-y-6 relative z-10 pb-20">
+                <!-- Lista de personajes generada por JS -->
+            </div>
+        </main>
+
+        <footer class="max-w-4xl mx-auto mt-8 text-center text-slate-400 text-[10px] border-t border-slate-200 pt-8 pb-12">
+            <p>Fuentes: Génesis 5, Génesis 11, Rut 4, Mateo 1:1-17 y Lucas 3.</p>
+            <p class="mt-1">El linaje de Jesús cumple la promesa dada a Abraham y el pacto con David.</p>
+        </footer>
+    </div>
+
+    <script>
+        const eraData = {
+            antediluviana: {
+                title: "De Adán a Noé",
+                subtitle: "Los Patriarcas Antediluvianos",
+                icon: "history",
+                iconColor: "text-stone-600",
+                description: "Desde la creación hasta el juicio del Diluvio.",
+                items: [
+                    { gen: 1, name: "Adán y Eva", meaning: "Hombre / Vida", age: 930, note: "Creados a imagen de Dios. El inicio de la humanidad.", color: "bg-stone-100 border-stone-500 text-stone-900" },
+                    { gen: 2, name: "Set", meaning: "Sustitución", age: 912, note: "Hijo de la promesa tras la muerte de Abel.", color: "bg-sky-100 border-sky-500 text-sky-900" },
+                    { gen: 3, name: "Enós", meaning: "Mortal", age: 905, note: "Se comenzó a invocar el nombre del Señor.", color: "bg-cyan-100 border-cyan-500 text-cyan-900" },
+                    { gen: 4, name: "Cainán", meaning: "Posesión", age: 910, note: "Cuarta generación desde Adán.", color: "bg-teal-100 border-teal-500 text-teal-900" },
+                    { gen: 5, name: "Mahalalel", meaning: "Alabanza de Dios", age: 895, note: "Su nombre refleja una cultura de adoración.", color: "bg-emerald-100 border-emerald-500 text-emerald-900" },
+                    { gen: 6, name: "Jered", meaning: "Descenso", age: 962, note: "Padre de Enoc.", color: "bg-green-100 border-green-500 text-green-900" },
+                    { gen: 7, name: "Enoc", meaning: "Dedicado", age: 365, note: "Caminó con Dios y fue traspuesto para no ver muerte.", highlight: true, color: "bg-purple-100 border-purple-500 text-purple-900" },
+                    { gen: 8, name: "Matusalén", meaning: "Su muerte traerá", age: 969, note: "El hombre más longevo. Murió el año del Diluvio.", highlight: true, color: "bg-rose-100 border-rose-500 text-rose-900" },
+                    { gen: 9, name: "Lamec", meaning: "Poderoso", age: 777, note: "Padre de Noé.", color: "bg-orange-100 border-orange-500 text-orange-900" },
+                    { gen: 10, name: "Noé", meaning: "Descanso", age: 950, note: "Halló gracia ante Dios y construyó el Arca.", highlight: true, color: "bg-indigo-100 border-indigo-600 text-indigo-900" }
+                ]
+            },
+            postdiluviana: {
+                title: "De Noé a Abraham",
+                subtitle: "La Dispersión de las Naciones",
+                icon: "anchor",
+                iconColor: "text-blue-600",
+                description: "El renacimiento de la humanidad tras el Diluvio hasta el llamado del primer patriarca.",
+                items: [
+                    { gen: 10, name: "Noé", meaning: "Descanso", age: 950, note: "Superviviente del Diluvio. El 'segundo Adán' con quien Dios renovó la alianza.", highlight: true, color: "bg-indigo-100 border-indigo-600 text-indigo-900 shadow-sm" },
+                    { gen: 11, name: "Sem", meaning: "Nombre / Renombre", age: 600, note: "Hijo de Noé y ancestro de los pueblos semitas.", color: "bg-violet-100 border-violet-500 text-violet-900" },
+                    { gen: 12, name: "Arfaxad", meaning: "Cerca de la frontera", age: 438, note: "Nacido dos años después del Diluvio.", color: "bg-blue-100 border-blue-400 text-blue-900" },
+                    { gen: 13, name: "Selaj", meaning: "Brote / Envío", age: 433, note: "Hijo de Arfaxad.", color: "bg-lime-100 border-lime-500 text-lime-900" },
+                    { gen: 14, name: "Éber", meaning: "El que cruza", age: 464, note: "Ancestro epónimo de los hebreos.", color: "bg-amber-100 border-amber-500 text-amber-900" },
+                    { gen: 15, name: "Péleg", meaning: "División", age: 239, note: "En sus días fue dividida la tierra (Torre de Babel).", color: "bg-fuchsia-100 border-fuchsia-500 text-fuchsia-900" },
+                    { gen: 16, name: "Reu", meaning: "Amigo", age: 239, note: "Continuación del linaje de Sem.", color: "bg-pink-100 border-pink-500 text-pink-900" },
+                    { gen: 17, name: "Serug", meaning: "Rama", age: 230, note: "Bisabuelo de Abraham.", color: "bg-red-100 border-red-400 text-red-900" },
+                    { gen: 18, name: "Nacor", meaning: "Resoplido", age: 148, note: "Abuelo de Abraham.", color: "bg-yellow-100 border-yellow-500 text-yellow-900" },
+                    { gen: 19, name: "Téraj", meaning: "Retraso", age: 205, note: "Padre de Abraham. Salió de Ur hacia Harán.", color: "bg-zinc-200 border-zinc-500 text-zinc-900" },
+                    { gen: 20, name: "Abraham", meaning: "Padre de Multitudes", age: 175, note: "Recibió la promesa de una gran nación.", highlight: true, color: "bg-orange-200 border-orange-600 text-orange-950 shadow-md" }
+                ]
+            },
+            monarquia: {
+                title: "De Abraham a David",
+                subtitle: "El Linaje Real de Judá",
+                icon: "crown",
+                iconColor: "text-yellow-600",
+                description: "Desde el llamado de Abraham hasta el establecimiento del trono de David.",
+                items: [
+                    { gen: 20, name: "Abraham", meaning: "Padre de Multitudes", age: 175, note: "El patriarca que salió de Ur. De su descendencia nacerían reyes.", highlight: true, color: "bg-orange-200 border-orange-600 text-orange-950 shadow-sm" },
+                    { gen: 21, name: "Isaac", meaning: "Risa", age: 180, note: "El hijo de la promesa nacido de Sara.", color: "bg-amber-50 border-amber-400 text-amber-800" },
+                    { gen: 22, name: "Jacob", meaning: "Israel", age: 147, note: "Padre de las 12 tribus de Israel.", color: "bg-yellow-50 border-yellow-500 text-yellow-900", specialBadge: "Padre de las 12 Tribus" },
+                    { gen: 23, name: "Judá", meaning: "Alabanza", age: "N/A", note: "De quien se profetizó que no faltaría el cetro real.", color: "bg-red-50 border-red-400 text-red-800" },
+                    { gen: 24, name: "Fares", meaning: "Brecha", age: "N/A", note: "Hijo de Judá y Tamar.", color: "bg-blue-50 border-blue-300 text-blue-700" },
+                    { gen: 25, name: "Esrom", meaning: "Cercado", age: "N/A", note: "Continuó el linaje durante la estancia en Egipto.", color: "bg-teal-50 border-teal-300 text-teal-700" },
+                    { gen: 26, name: "Aram", meaning: "Elevado", age: "N/A", note: "También llamado Ram.", color: "bg-cyan-50 border-cyan-300 text-cyan-700" },
+                    { gen: 27, name: "Aminadab", meaning: "Pueblo del Príncipe", age: "N/A", note: "Padre de Naasón.", color: "bg-sky-50 border-sky-300 text-sky-700" },
+                    { gen: 28, name: "Naasón", meaning: "Encantador", age: "N/A", note: "Príncipe de Judá durante el Éxodo.", color: "bg-indigo-50 border-indigo-300 text-indigo-700" },
+                    { gen: 29, name: "Salmón", meaning: "Vestido", age: "N/A", note: "Esposo de Rahab.", color: "bg-violet-50 border-violet-300 text-violet-700" },
+                    { gen: 30, name: "Booz", meaning: "En él hay fuerza", age: "N/A", note: "Esposo de Rut la moabita.", color: "bg-emerald-100 border-emerald-500 text-emerald-900" },
+                    { gen: 31, name: "Obed", meaning: "Siervo", age: "N/A", note: "Hijo de Booz y Rut.", color: "bg-lime-50 border-lime-300 text-lime-700" },
+                    { gen: 32, name: "Isaí", meaning: "Firme", age: "N/A", note: "Padre de David.", color: "bg-orange-50 border-orange-300 text-orange-700" },
+                    { gen: 33, name: "David", meaning: "Amado", age: 70, note: "El Rey según el corazón de Dios.", highlight: true, color: "bg-yellow-200 border-yellow-600 text-yellow-950 shadow" }
+                ]
+            },
+            mesianica: {
+                title: "De David a Jesús",
+                subtitle: "El Cumplimiento de la Promesa",
+                icon: "star",
+                iconColor: "text-indigo-600",
+                description: "La línea real desde el trono de David hasta el nacimiento del Mesías.",
+                items: [
+                    { gen: 33, name: "David", meaning: "Amado", age: 70, note: "El rey a quien Dios prometió un trono eterno.", highlight: true, color: "bg-yellow-200 border-yellow-600 text-yellow-950 shadow-sm" },
+                    { gen: 34, name: "Salomón", meaning: "Pacífico", age: "N/A", note: "Constructor del Templo de Jerusalén.", color: "bg-amber-200 border-amber-600 text-amber-950" },
+                    { gen: 35, name: "Roboam", meaning: "Ensancha el pueblo", age: "N/A", note: "Hijo de Salomón bajo quien se dividió el reino.", color: "bg-rose-100 border-rose-400 text-rose-800" },
+                    { gen: 43, name: "Ezequías", meaning: "Dios fortalece", age: "N/A", note: "Rey reformador que confió plenamente en Dios.", color: "bg-sky-100 border-sky-400 text-sky-800" },
+                    { gen: 46, name: "Josías", meaning: "Sostenido por Dios", age: "N/A", note: "Rey que restauró el culto a Jehová.", color: "bg-teal-100 border-teal-400 text-teal-800" },
+                    { gen: 47, name: "Jeconías", meaning: "Dios establece", age: "N/A", note: "Último rey antes del exilio a Babilonia.", color: "bg-red-200 border-red-500 text-red-900" },
+                    { gen: 49, name: "Zorobabel", meaning: "Sembrado en Babilonia", age: "N/A", note: "Líder del retorno del exilio y restaurador del altar.", color: "bg-emerald-200 border-emerald-600 text-emerald-950" },
+                    { gen: 58, name: "Matán", meaning: "Don", age: "N/A", note: "Ancestro de José en la línea mesiánica.", color: "bg-fuchsia-100 border-fuchsia-400 text-fuchsia-800" },
+                    { gen: 59, name: "Jacob", meaning: "Suplantador", age: "N/A", note: "Padre de José según el Evangelio de Mateo.", color: "bg-violet-100 border-violet-400 text-violet-800" },
+                    { gen: 60, name: "José", meaning: "Que él añada", age: "N/A", note: "Esposo de María y padre legal de Jesús.", color: "bg-indigo-200 border-indigo-500 text-indigo-950" },
+                    { gen: 61, name: "Jesús", meaning: "Salvador", age: "Eterno", note: "El Cristo, cumplimiento final de la promesa a Abraham y David.", highlight: true, color: "bg-gradient-to-r from-white to-indigo-50 border-yellow-500 text-indigo-950 shadow-xl" }
+                ]
+            }
+        };
+
+        let currentActiveEra = 'postdiluviana';
+        let currentSelectedIdx = null;
+
+        function renderTabs() {
+            const container = document.getElementById('tabs-container');
+            container.innerHTML = '';
+            
+            Object.keys(eraData).forEach(key => {
+                const era = eraData[key];
+                const isActive = key === currentActiveEra;
+                const button = document.createElement('button');
+                button.className = `px-4 py-2 rounded-full text-xs md:text-sm font-bold transition-all ${
+                    isActive ? 'bg-slate-900 text-white shadow-lg' : 'bg-white text-slate-500 hover:bg-slate-200 border border-slate-200'
+                }`;
+                button.textContent = era.title;
+                button.onclick = () => switchEra(key);
+                container.appendChild(button);
+            });
+        }
+
+        function switchEra(key) {
+            currentActiveEra = key;
+            currentSelectedIdx = null;
+            render();
+        }
+
+        function togglePerson(idx) {
+            currentSelectedIdx = currentSelectedIdx === idx ? null : idx;
+            render();
+        }
+
+        function render() {
+            const era = eraData[currentActiveEra];
+            
+            // Render Header Content
+            document.getElementById('era-title').innerHTML = `
+                <i data-lucide="${era.icon}" class="${era.iconColor} w-8 h-8 md:w-10 md:h-10"></i>
+                ${era.title}
+            `;
+            document.getElementById('era-subtitle').textContent = era.subtitle;
+            document.getElementById('era-description').textContent = era.description;
+
+            renderTabs();
+
+            // Render List
+            const listContainer = document.getElementById('list-container');
+            listContainer.innerHTML = '';
+
+            era.items.forEach((person, index) => {
+                const isSelected = index === currentSelectedIdx;
+                const personDiv = document.createElement('div');
+                personDiv.className = "flex flex-col items-center";
+
+                const iconToUse = person.highlight ? 'star' : 'user';
+                const specialBadge = person.specialBadge ? `
+                    <span class="inline-flex items-center gap-1 mt-1 text-[10px] font-bold bg-white/40 px-2 py-0.5 rounded-full w-fit border border-current">
+                        <i data-lucide="users" class="w-3 h-3"></i>
+                        ${person.specialBadge}
+                    </span>
+                ` : '';
+
+                personDiv.innerHTML = `
+                    <button class="w-full max-w-md p-4 rounded-xl border-2 transition-all duration-300 transform hover:scale-[1.02] shadow-sm flex items-center gap-4 ${person.color} ${isSelected ? 'ring-4 ring-offset-2 ring-slate-300 scale-[1.02]' : ''}" onclick="togglePerson(${index})">
+                        <div class="flex-shrink-0 bg-white/50 p-2 rounded-full">
+                            <i data-lucide="${iconToUse}" class="text-inherit ${person.highlight ? 'fill-current opacity-40' : ''} w-5 h-5"></i>
+                        </div>
+                        
+                        <div class="flex-grow text-left">
+                            <div class="text-[10px] uppercase font-bold opacity-70 tracking-wider">
+                                ${currentActiveEra === 'mesianica' && person.name === "Jesús" ? "Cumplimiento" : `Generación ${person.gen}`}
+                            </div>
+                            <div class="flex flex-col">
+                                <h3 class="text-lg font-bold">${person.name}</h3>
+                                ${specialBadge}
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0">
+                            <i data-lucide="${isSelected ? 'chevron-down' : 'chevron-right'}" class="w-5 h-5"></i>
+                        </div>
+                    </button>
+
+                    ${isSelected ? `
+                        <div class="w-full max-w-md mt-2 p-5 bg-white rounded-xl shadow-xl border border-slate-200 animate-in">
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="info" class="text-slate-400 mt-1 w-4 h-4"></i>
+                                    <div>
+                                        <span class="block text-[10px] font-bold text-slate-500 uppercase">Significado</span>
+                                        <span class="text-slate-800 text-sm font-medium">${person.meaning}</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="calendar" class="text-slate-400 mt-1 w-4 h-4"></i>
+                                    <div>
+                                        <span class="block text-[10px] font-bold text-slate-500 uppercase">Referencia</span>
+                                        <span class="text-slate-800 text-sm font-semibold">${person.age === "N/A" ? "Dinastía" : person.age === "Eterno" ? "Alfa y Omega" : `${person.age} años`}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-3 border-t border-slate-100">
+                                <p class="text-slate-700 leading-relaxed text-sm italic">
+                                    ${person.note}
+                                </p>
+                            </div>
+                        </div>
+                    ` : ''}
+                `;
+                listContainer.appendChild(personDiv);
+            });
+
+            // Refresh Lucide icons
+            lucide.createIcons();
+        }
+
+        // Initialize
+        window.onload = render;
+    </script>
+</body>
+</html>
